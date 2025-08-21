@@ -1,7 +1,9 @@
 package com.javarush.zybin;
 
-public class Runner {
+public class RunnerApplication {
     public static void main(String[] args) {
+
+
 
     }
 }
