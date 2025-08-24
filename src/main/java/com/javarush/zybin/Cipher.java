@@ -1,37 +1,11 @@
 package com.javarush.zybin;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+public class Cipher {
 
-import java.util.List;
+    private static final char[] ALPHABET = "абвгдеёжзийклмнопрстуфхцчшщъыьэюяАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ,.!? ".toCharArray();
+    public int key;
 
-public class RunnerApplication {
-    public static final char[] ALPHABET = "абвгдеёжзийклмнопрстуфхцчшщъыьэюяАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ,.!? ".toCharArray();
-
-    public static void main(String[] args) {
-        int key = 25;
-
-        Path path = Paths.get("C:\\Users\\ZybinAV\\Desktop\\test\\text.txt");
-        List<String> textFile;
-        try {
-            textFile = Files.readAllLines(path);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        for (String line : textFile) {
-            String encryptedLine = Cipher.encrypt(line, key);
-            String decryptedLine =Cipher.decrypt(encryptedLine, key);
-            System.out.println("Original: " + line);
-            System.out.println("Encrypted: " + encryptedLine);
-            System.out.println("Decrypted: " + decryptedLine);
-        }
-
-
-    }
-
-    /*public static String encrypt(String text, int key) {
+    public static String encrypt(String text, int key) {
         StringBuilder result = new StringBuilder();
         for (char character : text.toCharArray()) {
             int index = -1;
@@ -55,6 +29,8 @@ public class RunnerApplication {
         return result.toString();
     }
 
+
+
     public static String decrypt(String text, int key) {
         StringBuilder result = new StringBuilder();
         for (char character : text.toCharArray()) {
@@ -77,6 +53,5 @@ public class RunnerApplication {
             }
         }
         return result.toString();
-    }*/
+    }
 }
-
