@@ -33,19 +33,19 @@ public class FileManager {
     }
 
     static String readFile(String path) {
-        validatePath(path, "Чтение файла");
+        validatePath(path, "File reading");
 
         try {
             Path inputPath = Paths.get(path);
 
             // Проверка существования файла
             if (!Files.exists(inputPath)) {
-                throw new FileNotFoundException("Файл не найден: " + path, null);
+                throw new FileNotFoundException("File not found: " + path, null);
             }
 
             // Проверка, что это действительно файл, а не директория
             if (Files.isDirectory(inputPath)) {
-                throw new InvalidPathException("Указанный путь является директорией, а не файлом: " + path);
+                throw new InvalidPathException("The specified path is a directory, not a file: " + path);
             }
 
             List<String> lines = Files.readAllLines(inputPath, StandardCharsets.UTF_8);
@@ -55,16 +55,16 @@ public class FileManager {
             // Перебрасываем наши собственные исключения
             throw e;
         } catch (NoSuchFileException e) {
-            throw new FileNotFoundException("Файл не существует: " + path, e);
+            throw new FileNotFoundException("The file does not exist: " + path, e);
         } catch (AccessDeniedException e) {
-            throw new FileReadException("Нет прав доступа для чтения файла: " + path, e);
+            throw new FileReadException("No access for reading file: " + path, e);
         } catch (IOException e) {
-            throw new FileReadException("Ошибка ввода-вывода при чтении файла: " + path, e);
+            throw new FileReadException("Error input-output when reading a file: " + path, e);
         }
     }
 
     static void writeFile(String path, String content) {
-        validatePath(path, "Запись файла");
+        validatePath(path, "File recording");
 
         try {
             Path outputPath = Paths.get(path);
@@ -75,13 +75,13 @@ public class FileManager {
                 try {
                     Files.createDirectories(parentDir);
                 } catch (IOException e) {
-                    throw new FileWriteException("Не удалось создать директории для пути: " + path, e);
+                    throw new FileWriteException("Failed to create a directory for the path: " + path, e);
                 }
             }
 
             // Проверка прав на запись
             if (Files.exists(outputPath) && !Files.isWritable(outputPath)) {
-                throw new AccessDeniedException("Нет прав на запись в файл: " + path);
+                throw new AccessDeniedException("No right to write to the file: " + path);
             }
 
             Files.writeString(outputPath, content,
@@ -91,20 +91,20 @@ public class FileManager {
                     StandardOpenOption.WRITE);
 
         } catch (AccessDeniedException e) {
-            throw new FileWriteException("Нет прав доступа для записи файла: " + path, e);
+            throw new FileWriteException("No access for file recording: " + path, e);
         } catch (IOException e) {
-            throw new FileWriteException("Ошибка ввода-вывода при записи файла: " + path, e);
+            throw new FileWriteException("Error input-output when writing a file: " + path, e);
         }
     }
 
     // Валидация пути
     private static void validatePath(String path, String operation) {
         if (path == null || path.trim().isEmpty()) {
-            throw new InvalidPathException("Путь не может быть пустым для операции: " + operation);
+            throw new InvalidPathException("The path cannot be empty for surgery: " + operation);
         }
 
         if (path.contains("\0")) {
-            throw new InvalidPathException("Путь содержит недопустимые символы: " + path);
+            throw new InvalidPathException("The path contains unacceptable symbols: " + path);
         }
     }
 
