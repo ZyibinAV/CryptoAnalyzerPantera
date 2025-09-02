@@ -2,7 +2,7 @@ package com.javarush.zybin;
 
 public class Cipher {
 
-    private static final char[] ALPHABET = "абвгдеёжзийклмнопрстуфхцчшщъыьэюяАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ,.!? ".toCharArray();
+    private static final char[] ALPHABET = "абвгдеёжзийклмнопрстуфхцчшщъыьэюяАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ,.!? 123456789".toCharArray();
     private int key;
 
     public int getKey() {
@@ -36,8 +36,6 @@ public class Cipher {
         }
         return result.toString();
     }
-
-
 
     public  String decrypt(String text, int key) {
         StringBuilder result = new StringBuilder();

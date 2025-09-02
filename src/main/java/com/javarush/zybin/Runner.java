@@ -8,6 +8,8 @@ public class Runner {
         Cipher cipher = new Cipher();
         ConsoleMenu consoleMenu = new ConsoleMenu(cipher);
         consoleMenu.handleEncryption();
+        consoleMenu.handleDecryption();
+
     }
 
 }
