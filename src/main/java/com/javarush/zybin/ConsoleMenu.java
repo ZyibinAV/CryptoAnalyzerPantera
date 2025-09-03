@@ -18,8 +18,11 @@ public class ConsoleMenu {
         this.userName = "Guest";
     }
 
+    public boolean isRunner() {
+        return isRunner;
+    }
 
-    private void displayMainMenu() {
+    public void displayMainMenu() {
         System.out.println("╔══════════════════════════════╗");
         System.out.println("║         Main menu            ║");
         System.out.println("╠══════════════════════════════╣");
@@ -31,7 +34,7 @@ public class ConsoleMenu {
         System.out.print("Select the option (0-3): ");
     }
 
-    private void operationMenu() {
+    public void operationMenu() {
         System.out.println("╔══════════════════════════════╗");
         System.out.println("║       Operation menu         ║");
         System.out.println("╠══════════════════════════════╣");
@@ -43,7 +46,7 @@ public class ConsoleMenu {
         System.out.print("Select the option (0-3): ");
     }
 
-    private int getUserChoice() {
+    public int getUserChoice() {
         while (!scanner.hasNextInt()) {
             System.out.println("Please, enter a number between 0 and 3!");
             scanner.next();
@@ -54,11 +57,11 @@ public class ConsoleMenu {
         return choice;
     }
 
-    private void showGreeting() {
+    public void showGreeting() {
         System.out.println("\uD83D\uDC4B Hello, " + userName + "! Thank you for choosing our product");
     }
 
-    private void changeUserName() {
+    public void changeUserName() {
         System.out.println("Enter your name: ");
         String newName = scanner.nextLine().trim();
         if (!newName.isEmpty()) {
@@ -71,13 +74,13 @@ public class ConsoleMenu {
 
     public void handleEncryption() {
         try {
-            System.out.println("Enter the key to encryption");
+            System.out.println("Enter the encryption key (1-80)");
             int key = scanner.nextInt();
             if (key < Cipher.ALPHABET.length && key > 0) {
                 cipher.setKey(key);
             } else {
                 System.out.println("The key cannot be more than 80 or negative");
-                 handleEncryption();
+                handleEncryption();
             }
             scanner.nextLine();
             System.out.println("Write the path to the file or the choice will occur by default");
@@ -115,7 +118,8 @@ public class ConsoleMenu {
             e.printStackTrace();
         }
     }
-    private void handleDecryption() {
+
+    public void handleDecryption() {
         try {
             System.out.println("Write the path to the file or the choice will occur by default");
             String filePath = scanner.nextLine().trim();
@@ -152,6 +156,7 @@ public class ConsoleMenu {
             e.printStackTrace();
         }
     }
+
     public void handleBruteForce() {
         try {
             System.out.println("Write the path to the file or the choice will occur by default");
@@ -207,5 +212,14 @@ public class ConsoleMenu {
         }
     }
 
+    public void returnDisplayMainMenu() {
+        displayMainMenu();
+    }
+
+    public void exitMenu() {
+        System.out.println("Goodbye, " + userName + "!");
+        System.out.println("Completion of work...");
+        isRunner = false;
+    }
 
 }
