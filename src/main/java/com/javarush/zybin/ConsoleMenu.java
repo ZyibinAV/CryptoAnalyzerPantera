@@ -1,7 +1,9 @@
 package com.javarush.zybin;
 
+import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Scanner;
+import java.util.Set;
 
 public class ConsoleMenu {
     private Cipher cipher;
@@ -67,14 +69,14 @@ public class ConsoleMenu {
         }
     }
 
-    private void handleEncryption() {
+    public void handleEncryption() {
         try {
             System.out.println("Enter the key to encryption");
             int key = scanner.nextInt();
-            if (key <= 35 && key > 0) {
+            if (key < Cipher.ALPHABET.length && key > 0) {
                 cipher.setKey(key);
             } else {
-                System.out.println("The key cannot be more than 35 or negative");
+                System.out.println("The key cannot be more than 80 or negative");
                  handleEncryption();
             }
             scanner.nextLine();
@@ -134,7 +136,7 @@ public class ConsoleMenu {
             }
             String decrypted = cipher.decrypt(content, cipher.getKey());
             if (decrypted == null) {
-                System.out.println("Error: encryption failed");
+                System.out.println("Error: decryption failed");
                 return;
             }
             System.out.println("Enter the path to save the file:");
@@ -146,7 +148,61 @@ public class ConsoleMenu {
             FileManager.writeFile(savePath, decrypted);
 
         } catch (Exception e) {
-            System.out.println("Error during encryption: " + e.getMessage());
+            System.out.println("Error during decryption: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+    public void handleBruteForce() {
+        try {
+            System.out.println("Write the path to the file or the choice will occur by default");
+            String filePath = scanner.nextLine().trim();
+            String content;
+            if (!filePath.isEmpty()) {
+                content = FileManager.readFile(filePath);
+                if (content == null) {
+                    System.out.println("Error: cannot read file: " + filePath);
+                    return;
+                }
+            } else {
+                Path defaultPath = GettingPath.getCurrentDir().resolve("encryptedText.txt");
+                content = FileManager.readFile(defaultPath.toString());
+                if (content == null) {
+                    System.out.println("Error: default file not found: " + defaultPath);
+                    return;
+                }
+            }
+            System.out.println("Write the path to the dictionary file, or the choice will occur by default");
+            String filePathDictionary = scanner.nextLine().trim();
+            String contentDictionary;
+            if (!filePathDictionary.isEmpty()) {
+                contentDictionary = FileManager.readFile(filePathDictionary);
+                if (contentDictionary == null) {
+                    System.out.println("Error: cannot read file: " + filePathDictionary);
+                    return;
+                }
+            } else {
+                Path defaultPath = GettingPath.getCurrentDir().resolve("dict.txt");
+                contentDictionary = FileManager.readFile(defaultPath.toString());
+                if (contentDictionary == null) {
+                    System.out.println("Error: default file not found: " + defaultPath);
+                    return;
+                }
+            }
+            Set<String> dictionary = cipher.dictionaryProcessing(contentDictionary);
+            String bruteForce = cipher.bruteForce(content, dictionary);
+            if (bruteForce == null) {
+                System.out.println("Error: decryption failed");
+                return;
+            }
+            System.out.println("Enter the path to save the file:");
+            String savePath = scanner.nextLine().trim();
+
+            if (savePath.isEmpty()) {
+                savePath = GettingPath.getCurrentDir().resolve("decodedBruteForce.txt").toString();
+            }
+            FileManager.writeFile(savePath, bruteForce);
+        } catch (IOException e) {
+            System.out.println("Error during decryption: " + e.getMessage());
             e.printStackTrace();
         }
     }
