@@ -33,7 +33,7 @@ public class ConsoleMenuRunner {
                         case 0:
                             consoleMenu.returnDisplayMainMenu();
                         default:
-                            System.out.println("The wrong choice");
+                            System.out.println(consoleMenu.getUserName() + ", the wrong choice");
                             break;
                     }
                     break;
@@ -41,7 +41,7 @@ public class ConsoleMenuRunner {
                     consoleMenu.exitMenu();
                     break;
                 default:
-                    System.out.println("Wrong choice, please repeat the choice from 0 to 3");
+                    System.out.println(consoleMenu.getUserName() + ", wrong choice, please repeat the choice from 0 to 3");
             }
         }
     }

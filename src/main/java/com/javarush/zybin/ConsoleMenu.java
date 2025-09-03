@@ -22,6 +22,10 @@ public class ConsoleMenu {
         return isRunner;
     }
 
+    public String getUserName() {
+        return userName;
+    }
+
     public void displayMainMenu() {
         System.out.println("╔══════════════════════════════╗");
         System.out.println("║         Main menu            ║");

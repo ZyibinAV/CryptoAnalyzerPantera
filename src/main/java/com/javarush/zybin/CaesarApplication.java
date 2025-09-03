@@ -1,7 +1,7 @@
 package com.javarush.zybin;
 
 
-public class Runner {
+public class CaesarApplication {
 
     public static void main(String[] args) {
 
