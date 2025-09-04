@@ -1,4 +1,4 @@
-package com.javarush.zybin;
+package com.javarush.zybin.file;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;

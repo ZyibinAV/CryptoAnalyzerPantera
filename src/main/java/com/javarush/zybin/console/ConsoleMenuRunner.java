@@ -1,4 +1,4 @@
-package com.javarush.zybin;
+package com.javarush.zybin.console;
 
 public class ConsoleMenuRunner {
     ConsoleMenu consoleMenu = new ConsoleMenu();

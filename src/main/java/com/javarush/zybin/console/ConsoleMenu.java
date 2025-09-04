@@ -1,18 +1,30 @@
-package com.javarush.zybin;
+package com.javarush.zybin.console;
+
+import com.javarush.zybin.cipher.BruteForce;
+import com.javarush.zybin.cipher.Decrypt;
+import com.javarush.zybin.cipher.Encrypt;
+import com.javarush.zybin.file.FileManager;
+import com.javarush.zybin.file.GettingPath;
 
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Scanner;
 import java.util.Set;
 
+import static com.javarush.zybin.cipher.Alphabet.ALPHABET;
+
 public class ConsoleMenu {
-    private final Cipher cipher;
+    private final Encrypt encrypt;
+    private final Decrypt decrypt;
+    private final BruteForce bruteForce;
     private final Scanner scanner;
     private boolean isRunner;
     private String userName;
 
     public ConsoleMenu() {
-        this.cipher = new Cipher();
+        this.encrypt = new Encrypt();
+        this.decrypt = new Decrypt();
+        this.bruteForce = new BruteForce();
         this.scanner = new Scanner(System.in);
         this.isRunner = true;
         this.userName = "Guest";
@@ -80,8 +92,8 @@ public class ConsoleMenu {
         try {
             System.out.println("Enter the encryption key (1-80)");
             int key = scanner.nextInt();
-            if (key < Cipher.ALPHABET.length && key > 0) {
-                cipher.setKey(key);
+            if (key < ALPHABET.length && key > 0) {
+                encrypt.setKey(key);
             } else {
                 System.out.println("The key cannot be more than 80 or negative");
                 handleEncryption();
@@ -96,7 +108,7 @@ public class ConsoleMenu {
                 Path defaultPath = GettingPath.getCurrentDir().resolve("text.txt");
                 content = FileManager.readFile(defaultPath.toString());
             }
-            String encryptedContent = cipher.encrypt(content, cipher.getKey());
+            String encryptedContent = encrypt.action(content, encrypt.getKey());
             if (encryptedContent == null) {
                 System.out.println("Error: encryption failed");
                 return;
@@ -108,7 +120,7 @@ public class ConsoleMenu {
                 savePath = GettingPath.getCurrentDir().resolve("encryptedText.txt").toString();
             }
             FileManager.writeFile(savePath, encryptedContent);
-            System.out.println(userName + "! The encryption and saving the file has been successful!");
+            System.out.println(userName + "! The encryption and saving the file has been successful\uD83D\uDE0E");
 
         } catch (Exception e) {
             System.out.println("Error during encryption: " + e.getMessage());
@@ -127,7 +139,7 @@ public class ConsoleMenu {
                 Path defaultPath = GettingPath.getCurrentDir().resolve("encryptedText.txt");
                 content = FileManager.readFile(defaultPath.toString());
             }
-            String decrypted = cipher.decrypt(content, cipher.getKey());
+            String decrypted = decrypt.action(content, encrypt.getKey());
             if (decrypted == null) {
                 System.out.println("Error: decryption failed");
                 return;
@@ -139,7 +151,7 @@ public class ConsoleMenu {
                 savePath = GettingPath.getCurrentDir().resolve("decodedText.txt").toString();
             }
             FileManager.writeFile(savePath, decrypted);
-            System.out.println(userName + "Decryption and saving the file is successful");
+            System.out.println(userName + "! Decryption and saving the file is successful\uD83D\uDE0E");
 
         } catch (Exception e) {
             System.out.println("Error during decryption: " + e.getMessage());
@@ -167,9 +179,9 @@ public class ConsoleMenu {
                 Path defaultPath = GettingPath.getCurrentDir().resolve("dict.txt");
                 contentDictionary = FileManager.readFile(defaultPath.toString());
             }
-            Set<String> dictionary = cipher.dictionaryProcessing(contentDictionary);
-            String bruteForce = cipher.bruteForce(content, dictionary);
-            if (bruteForce == null) {
+            Set<String> dictionary = bruteForce.dictionaryProcessing(contentDictionary);
+            String result = bruteForce.action(content, dictionary);
+            if (result == null) {
                 System.out.println("Error: decryption failed");
                 return;
             }
@@ -179,10 +191,10 @@ public class ConsoleMenu {
             if (savePath.isEmpty()) {
                 savePath = GettingPath.getCurrentDir().resolve("decodedBruteForce.txt").toString();
             }
-            FileManager.writeFile(savePath, bruteForce);
+            FileManager.writeFile(savePath, result);
             System.out.println(userName +
-                    "The decoding by the Brute Force and saving the file was successful! Correct encryption key: " +
-                    cipher.getBestKey());
+                    "! The decoding by the Brute Force and saving the file was successful\uD83D\uDE0E \n Correct encryption key: " +
+                    bruteForce.getBestKey());
         } catch (IOException e) {
             System.out.println("Error during decryption: " + e.getMessage());
             e.printStackTrace();
@@ -194,7 +206,7 @@ public class ConsoleMenu {
     }
 
     public void exitMenu() {
-        System.out.println("Goodbye, " + userName + "!");
+        System.out.println("Goodbye, " + userName + "!\uD83D\uDC4B");
         System.out.println("Completion of work...");
         isRunner = false;
     }

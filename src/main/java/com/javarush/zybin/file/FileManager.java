@@ -1,4 +1,4 @@
-package com.javarush.zybin;
+package com.javarush.zybin.file;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -31,7 +31,7 @@ public class FileManager {
         }
     }
 
-    static String readFile(String path) {
+    public static String readFile(String path) {
         validatePath(path, "File reading");
 
         try {
@@ -48,8 +48,6 @@ public class FileManager {
             List<String> lines = Files.readAllLines(inputPath, StandardCharsets.UTF_8);
             return String.join(System.lineSeparator(), lines);
 
-        } catch (InvalidPathException | FileNotFoundException e) {
-            throw e;
         } catch (NoSuchFileException e) {
             throw new FileNotFoundException("The file does not exist: " + path, e);
         } catch (AccessDeniedException e) {
@@ -59,7 +57,7 @@ public class FileManager {
         }
     }
 
-    static void writeFile(String path, String content) {
+    public static void writeFile(String path, String content) {
         validatePath(path, "File recording");
 
         try {
