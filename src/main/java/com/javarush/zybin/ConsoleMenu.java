@@ -92,30 +92,23 @@ public class ConsoleMenu {
             String content;
             if (!filePath.isEmpty()) {
                 content = FileManager.readFile(filePath);
-                if (content == null) {
-                    System.out.println("Error: cannot read file: " + filePath);
-                    return;
-                }
             } else {
                 Path defaultPath = GettingPath.getCurrentDir().resolve("text.txt");
                 content = FileManager.readFile(defaultPath.toString());
-                if (content == null) {
-                    System.out.println("Error: default file not found: " + defaultPath);
-                    return;
-                }
             }
             String encryptedContent = cipher.encrypt(content, cipher.getKey());
             if (encryptedContent == null) {
                 System.out.println("Error: encryption failed");
                 return;
             }
-            System.out.println("Enter the path to save the file:");
+            System.out.println("Enter the path to save the file or save will occur by default:");
             String savePath = scanner.nextLine().trim();
 
             if (savePath.isEmpty()) {
                 savePath = GettingPath.getCurrentDir().resolve("encryptedText.txt").toString();
             }
             FileManager.writeFile(savePath, encryptedContent);
+            System.out.println(userName + "! The encryption and saving the file has been successful!");
 
         } catch (Exception e) {
             System.out.println("Error during encryption: " + e.getMessage());
@@ -130,30 +123,23 @@ public class ConsoleMenu {
             String content;
             if (!filePath.isEmpty()) {
                 content = FileManager.readFile(filePath);
-                if (content == null) {
-                    System.out.println("Error: cannot read file: " + filePath);
-                    return;
-                }
             } else {
                 Path defaultPath = GettingPath.getCurrentDir().resolve("encryptedText.txt");
                 content = FileManager.readFile(defaultPath.toString());
-                if (content == null) {
-                    System.out.println("Error: default file not found: " + defaultPath);
-                    return;
-                }
             }
             String decrypted = cipher.decrypt(content, cipher.getKey());
             if (decrypted == null) {
                 System.out.println("Error: decryption failed");
                 return;
             }
-            System.out.println("Enter the path to save the file:");
+            System.out.println("Enter the path to save the file or save will occur by default:");
             String savePath = scanner.nextLine().trim();
 
             if (savePath.isEmpty()) {
                 savePath = GettingPath.getCurrentDir().resolve("decodedText.txt").toString();
             }
             FileManager.writeFile(savePath, decrypted);
+            System.out.println(userName + "Decryption and saving the file is successful");
 
         } catch (Exception e) {
             System.out.println("Error during decryption: " + e.getMessage());
@@ -168,34 +154,18 @@ public class ConsoleMenu {
             String content;
             if (!filePath.isEmpty()) {
                 content = FileManager.readFile(filePath);
-                if (content == null) {
-                    System.out.println("Error: cannot read file: " + filePath);
-                    return;
-                }
             } else {
                 Path defaultPath = GettingPath.getCurrentDir().resolve("encryptedText.txt");
                 content = FileManager.readFile(defaultPath.toString());
-                if (content == null) {
-                    System.out.println("Error: default file not found: " + defaultPath);
-                    return;
-                }
             }
             System.out.println("Write the path to the dictionary file, or the choice will occur by default");
             String filePathDictionary = scanner.nextLine().trim();
             String contentDictionary;
             if (!filePathDictionary.isEmpty()) {
                 contentDictionary = FileManager.readFile(filePathDictionary);
-                if (contentDictionary == null) {
-                    System.out.println("Error: cannot read file: " + filePathDictionary);
-                    return;
-                }
             } else {
                 Path defaultPath = GettingPath.getCurrentDir().resolve("dict.txt");
                 contentDictionary = FileManager.readFile(defaultPath.toString());
-                if (contentDictionary == null) {
-                    System.out.println("Error: default file not found: " + defaultPath);
-                    return;
-                }
             }
             Set<String> dictionary = cipher.dictionaryProcessing(contentDictionary);
             String bruteForce = cipher.bruteForce(content, dictionary);
@@ -203,13 +173,16 @@ public class ConsoleMenu {
                 System.out.println("Error: decryption failed");
                 return;
             }
-            System.out.println("Enter the path to save the file:");
+            System.out.println("Enter the path to save the file or save will occur by default:");
             String savePath = scanner.nextLine().trim();
 
             if (savePath.isEmpty()) {
                 savePath = GettingPath.getCurrentDir().resolve("decodedBruteForce.txt").toString();
             }
             FileManager.writeFile(savePath, bruteForce);
+            System.out.println(userName +
+                    "The decoding by the Brute Force and saving the file was successful! Correct encryption key: " +
+                    cipher.getBestKey());
         } catch (IOException e) {
             System.out.println("Error during decryption: " + e.getMessage());
             e.printStackTrace();

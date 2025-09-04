@@ -8,9 +8,14 @@ public class Cipher {
 
     public static final char[] ALPHABET = "абвгдеёжзийклмнопрстуфхцчшщъыьэюяАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ,.!? 123456789".toCharArray();
     private int key;
+    private int bestKey = -1;
 
     public int getKey() {
         return key;
+    }
+
+    public int getBestKey() {
+        return bestKey;
     }
 
     public void setKey(int key) {
@@ -90,7 +95,7 @@ public class Cipher {
     }
 
     public String bruteForce(String text, Set<String> dictionary) {
-        int bestKey = -1;
+
         int maxMatches = 0;
         String bestDecryption = "";
 
