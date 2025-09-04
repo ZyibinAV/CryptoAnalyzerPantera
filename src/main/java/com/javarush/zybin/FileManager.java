@@ -7,7 +7,6 @@ import java.util.List;
 
 public class FileManager {
 
-    // Собственные исключения для лучшей семантики
     public static class FileReadException extends RuntimeException {
         public FileReadException(String message, Throwable cause) {
             super(message, cause);
@@ -38,12 +37,10 @@ public class FileManager {
         try {
             Path inputPath = Paths.get(path);
 
-            // Проверка существования файла
             if (!Files.exists(inputPath)) {
                 throw new FileNotFoundException("File not found: " + path, null);
             }
 
-            // Проверка, что это действительно файл, а не директория
             if (Files.isDirectory(inputPath)) {
                 throw new InvalidPathException("The specified path is a directory, not a file: " + path);
             }
@@ -52,7 +49,6 @@ public class FileManager {
             return String.join(System.lineSeparator(), lines);
 
         } catch (InvalidPathException | FileNotFoundException e) {
-            // Перебрасываем наши собственные исключения
             throw e;
         } catch (NoSuchFileException e) {
             throw new FileNotFoundException("The file does not exist: " + path, e);
@@ -70,7 +66,6 @@ public class FileManager {
             Path outputPath = Paths.get(path);
             Path parentDir = outputPath.getParent();
 
-            // Создание директорий, если они не существуют
             if (parentDir != null && !Files.exists(parentDir)) {
                 try {
                     Files.createDirectories(parentDir);
@@ -79,7 +74,6 @@ public class FileManager {
                 }
             }
 
-            // Проверка прав на запись
             if (Files.exists(outputPath) && !Files.isWritable(outputPath)) {
                 throw new AccessDeniedException("No right to write to the file: " + path);
             }
@@ -97,7 +91,6 @@ public class FileManager {
         }
     }
 
-    // Валидация пути
     private static void validatePath(String path, String operation) {
         if (path == null || path.trim().isEmpty()) {
             throw new InvalidPathException("The path cannot be empty for surgery: " + operation);

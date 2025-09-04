@@ -1,12 +1,12 @@
 package com.javarush.zybin;
 
 public class ConsoleMenuRunner {
-    Cipher cipher = new Cipher();
-    ConsoleMenu consoleMenu = new ConsoleMenu(cipher);
+    ConsoleMenu consoleMenu = new ConsoleMenu();
+
     public void start() {
         System.out.println("=======Welcome to the cipher of Caesar in the menu=======");
 
-        while(consoleMenu.isRunner())  {
+        while (consoleMenu.isRunner()) {
             consoleMenu.displayMainMenu();
             int choice = consoleMenu.getUserChoice();
 

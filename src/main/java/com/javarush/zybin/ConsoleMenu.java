@@ -6,12 +6,12 @@ import java.util.Scanner;
 import java.util.Set;
 
 public class ConsoleMenu {
-    private Cipher cipher;
-    private Scanner scanner;
+    private final Cipher cipher;
+    private final Scanner scanner;
     private boolean isRunner;
     private String userName;
 
-    public ConsoleMenu(Cipher cipher) {
+    public ConsoleMenu() {
         this.cipher = new Cipher();
         this.scanner = new Scanner(System.in);
         this.isRunner = true;
